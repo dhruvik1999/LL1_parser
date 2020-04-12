@@ -37,10 +37,12 @@ public class ll1 {
 			// System.out.println( this.start + " : : " + productions.get("T")[0]  );
 		}
 
-		public String[] follow(String s, ){
-			if( s.length != 1 ){
-				return new String[];
+		public String[] follow(String s){
+			if( s.length() != 1 ){
+				return new String[0];
 			}
+				return new String[0];
+			
 		}
 
 
