@@ -104,15 +104,20 @@ def follow(s, productions, ans):
 	if len(s)!=1 :
 		return {}
 
+	print("Call : ",s)
 	for key in productions:
 		for value in productions[key]:
 			f = value.find(s)
+			print("-->",key,value)
+			print("f::",f)
 			if f!=-1:
 				if f==(len(value)-1):
 					if key!=s:
 						if key in ans:
+							print("Found",ans[key])
 							temp = ans[key]
 						else:
+							print("Not Found")
 							ans = follow(key, productions, ans)
 							temp = ans[key]
 						ans[s] = ans[s].union(temp)
