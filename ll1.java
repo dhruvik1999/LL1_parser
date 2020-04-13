@@ -226,7 +226,26 @@ public class ll1 {
 		 * @param s The string to parse using the parsing table
 		 * @return A string representation of a left most derivation
 		 */
-		public String parse(String s) {
+		public String parse(String user_input) {
+
+			int flag=0;
+			user_input=user_input+"$";
+			Stack<String> stack = new Stack<String>();
+
+			stack.push("$");
+			stack.push(this.start);
+
+			int input_len = user_input.length();
+			int index = 0;
+
+			while( stack.size()>0 ){
+				String top = stack.peek();
+				System.out.print(top);
+			}
+
+
+
+
 			return null;
 		}
 	}
