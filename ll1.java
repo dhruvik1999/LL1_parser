@@ -37,35 +37,24 @@ public class ll1 {
 				productions.put( lhs , Arrays.copyOfRange(gram, 1, gram.length));
 			}
 			String[] ss = {"$"};
-			// follow_dict.put(this.start,ss);
 			for(String lhs : productions.keySet() ){
 				follow_dict.put(lhs,new String[0]);
 			}
 
-			// System.out.println("Check : " + follow_dict.keySet().contains("SSS"));
-			// for( String sss : follow_dict.keySet() ){
-			// 	System.out.println(sss);
-			// }
 			follow_dict.put(this.start,ss);
 
 			for(String lhs : productions.keySet() ){
-				// System.out.println("---> : "+lhs);
 				follow_dict = follow( lhs , follow_dict );
 			}
-
-			for( String s : follow_dict.keySet() ){
-				System.out.println(s);
-				for( String val : follow_dict.get(s) ){
-					System.out.print(val + " ");
-				}
-				System.out.println(" ");
-
-			}
-			// follow("S");
-		
-			// System.out.println( this.start + " : : " + productions.get("T")[0]  );
 		}
 
+		/**
+			this function will check the string in the array
+
+			@param a A array of string
+			@param trg Target in the aaray
+			@return boolean value for result
+		 */
 		public boolean check_str(String[] a,String trg){
 			for(String s : a){
 				if( s.equals(trg) ){
@@ -75,17 +64,21 @@ public class ll1 {
 			return false;
 		}
 
+		/**
+			This function will find the follow of s.
+
+			@param s A stirng to find follow
+			@param ans A datastructure to store the results for function
+			@return map for follow of each s
+		 */
 		public Map<String ,  String[] > follow(String s,Map<String ,  String[] > ans){
 			if( s.length() != 1 ){
 				return new HashMap<String, String[] >();
 			}
-			// System.out.println("CALL : "+s);
+
 			for( String key : productions.keySet() ){
-				// System.out.println(key);
 				for( String value : productions.get(key) ){
-					 // System.out.println( key + " : " + value );
 					int f = value.indexOf(s);
-					// System.out.println("f::"+f);
 					if(f!=-1){
 						if( f==value.length()-1 ){
 							if( key.equals(s)==false ){
@@ -124,7 +117,12 @@ public class ll1 {
 
 		}
 
+		/**
+			This function will find the first of s, and returns all the first for s as array.
 
+			@param s A stirng to find first
+			@return An array of first fo s
+		 */
 		public String[] first(String s){
 			String[] ans = {};
 			if( 'A' <= s.charAt(0) && s.charAt(0)<='Z' ){
@@ -147,6 +145,14 @@ public class ll1 {
 			return ans;
 		}
 
+		/**
+			This function performs unioun opperation of 2 string array
+
+
+			@param a First String array
+			@param b Second String array
+			@return unioun of a and b
+		 */
 		public String[] union(String[] a, String[] b){
 			if(a==null)
 				return b;
@@ -157,7 +163,6 @@ public class ll1 {
     			set.addAll(Arrays.asList(b));
     			String[] uon = {};
     			uon = set.toArray(uon);
-    			// System.out.println(Arrays.toString(uon));
     			return uon;
 		}
 
@@ -167,22 +172,7 @@ public class ll1 {
 		 * 
 		 * @return A string representation of the parsing table
 		 */
-// 			if value!='@':
-// 				for element in first(value, productions):
-// 					table[key, element] = value
-// 			else:
-// 				for element in follow[key]:
-// 					table[key, element] = value
 
-// 	for key,val in table.items():
-// 		print key,"=>",val
-
-// 	new_table = {}
-// 	for pair in table:
-// 		new_table[pair[1]] = {}
-
-// 	for pair in table:
-// 		new_table[pair[1]][pair[0]] = table[pair]
 
 		public String table() {
 			this.table = new HashMap< String , Map < String, String > >();
@@ -213,18 +203,16 @@ public class ll1 {
 			String ans = "";
 			for(String s1 : table.keySet()){
 				for(String s2 : table.get(s1).keySet()){
-					// System.out.println(s1 + " : " + s2 +  " : " + table.get(s1).get(s2)  );
 					ans += s1+","+s2+","+table.get(s1).get(s2)+";";
 				}
 			}
-			// System.out.println("--> :"+table.get("T").get("$"));
 			return ans;
 		}
 
 		/**
 		 * Parses the input string using the parsing table
 		 * 
-		 * @param s The string to parse using the parsing table
+		 * @param user_input The string to parse using the parsing table
 		 * @return A string representation of a left most derivation
 		 */
 		public String parse(String user_input) {
@@ -240,7 +228,6 @@ public class ll1 {
 			int index = 0;
 
 			String matched_String = "";
-			// String ans = stack.peek();
 
 			ArrayList<String> ans =new ArrayList<String>();
 			ans.add(stack.peek());
@@ -248,9 +235,7 @@ public class ll1 {
 
 			while( stack.size()>0 ){
 				String top = stack.peek();
-				// System.out.println("TOP : " + top);
 				String current_input = user_input.charAt(index)+"";
-				// System.out.println("CUR : " + current_input );
 				String unmatched_string = "";
 
 				if( top.equals(current_input) ){
@@ -261,7 +246,6 @@ public class ll1 {
 				}else{
 					if( table.get(top)==null || table.get(top).get(current_input)==null ){
 						flag=1;
-						// ans = ans + ";" + "ERROR";
 						ans.add("ERROR");
 						break;
 					}
@@ -288,15 +272,9 @@ public class ll1 {
 
 			}
 
-			// if(flag==0){
-			// 	System.out.println("Accepted");
-			// }else{
-			// 	System.out.println("Not Accepted");
-			// }
-
 			String temp  = "";
 			for(String tt : ans){
-				temp = temp + ";" + tt;
+				temp = temp + "," + tt;
 			}
 
 			return temp;
@@ -315,16 +293,9 @@ public class ll1 {
 		String input1 = "iiac";
 		String input2 = "iia";
 		CFG g = new CFG(grammar);
-		System.out.println("TABLE");
 		System.out.println(g.table());
-		System.out.println();
-		System.out.println();
-
-		System.out.println(input1 + " : " + g.parse(input1));
-
-		System.out.println();
-		System.out.println();
-		System.out.println(input2 + " : " +g.parse(input2));
+		System.out.println(g.parse(input1));
+		System.out.println(g.parse(input2));
 	}
 
 }
