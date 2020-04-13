@@ -160,22 +160,22 @@ if __name__=="__main__":
 	follow_dict = dict()
 	flag = 1
 	start = ""
-	# for line in grammar:
-	# 	l = re.split("( |->|\n|\||)*", line)
-	# 	lhs = l[0]
-	# 	rhs = set(l[1:])-{''}
-	# 	if flag :
-	# 		flag = 0
-	# 		start = lhs
-	# 	productions[lhs] = rhs
-	# print(productions)
+	for line in grammar:
+		l = re.split("( |->|\n|\||)*", line)
+		lhs = l[0]
+		rhs = set(l[1:])-{''}
+		if flag :
+			flag = 0
+			start = lhs
+		productions[lhs] = rhs
+	print(productions)
 	# # # productions['T'].add('a')
 
-	flag=0
-	productions["S"] = set([ "iST" , "@" ])-{''}
-	productions["T"] = set([ "cS" , "a" ])-{''}
-	start="S"
-	print(productions)
+	# flag=0
+	# productions["S"] = set([ "iST" , "@" ])-{''}
+	# productions["T"] = set([ "cS" , "a" ])-{''}
+	# start="S"
+	# print(productions)
 	
 	print '\nFirst\n'
 	for lhs in productions:
@@ -203,6 +203,6 @@ if __name__=="__main__":
 	ll1Table = ll1(follow_dict, productions)
 
 	#parse("a*(a+a)",start,ll1Table)
-	parse("iiac",start,ll1Table)
+	parse("abfff",start,ll1Table)
 
 	# tp(ll1Table)

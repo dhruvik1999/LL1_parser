@@ -40,20 +40,25 @@ public class ll1 {
 				follow_dict.put(lhs,new String[0]);
 			}
 
-			System.out.println("Check : " + check_str(follow_dict.keySet(),"S"));
-			for( String sss : follow_dict.keySet() ){
-				System.out.println(sss);
+			// System.out.println("Check : " + follow_dict.keySet().contains("SSS"));
+			// for( String sss : follow_dict.keySet() ){
+			// 	System.out.println(sss);
+			// }
+			follow_dict.put(this.start,ss);
+
+			for(String lhs : productions.keySet() ){
+				// System.out.println("---> : "+lhs);
+				follow_dict = follow( lhs , follow_dict );
 			}
-			// follow_dict.put(this.start,ss);
 
-			// for(String lhs : productions.keySet() ){
-			// 	System.out.println("---> : "+lhs);
-			// 	follow_dict = follow( lhs , follow_dict );
-			// }
+			for( String s : follow_dict.keySet() ){
+				System.out.println(s);
+				for( String val : follow_dict.get(s) ){
+					System.out.print(val + " ");
+				}
+				System.out.println(" ");
 
-			// for( String s : follow_dict.keySet() ){
-			// 	System.out.println(s );
-			// }
+			}
 			// follow("S");
 		
 			// System.out.println( this.start + " : : " + productions.get("T")[0]  );
@@ -82,7 +87,7 @@ public class ll1 {
 					if(f!=-1){
 						if( f==value.length()-1 ){
 							if( key.equals(s)==false ){
-								if(check_str(ans.keySet(),key)==false){
+								if( ans.keySet().contains(key)==false){
 									System.out.println("NOT Found");
 								 	ans = follow(key,ans);
 								}
@@ -96,7 +101,7 @@ public class ll1 {
 							String[] first_of_next = first( ss );
 							if( check_str(first_of_next,"e")==true ){
 								if( key.equals(s)==false ){
-									if(check_str(ans.keySet(),key)==false){
+									if(ans.keySet().contains(key)==false){
 										ans = follow(key,ans);
 									}
 									ans.put( s , union( ans.get(s) , ans.get(key) ) );
@@ -197,7 +202,7 @@ public class ll1 {
 		 * and class names are case sensitive
 		 */
 
-		String grammar = "S,iST,e;T,cS,a";
+		String grammar = "S,abDS,X;D,fD,e;X,t";
 		String input1 = "iiac";
 		String input2 = "iia";
 		CFG g = new CFG(grammar);
