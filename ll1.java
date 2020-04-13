@@ -85,7 +85,7 @@ public class ll1 {
 				for( String value : productions.get(key) ){
 					 // System.out.println( key + " : " + value );
 					int f = value.indexOf(s);
-					System.out.println("f::"+f);
+					// System.out.println("f::"+f);
 					if(f!=-1){
 						if( f==value.length()-1 ){
 							if( key.equals(s)==false ){
@@ -213,7 +213,7 @@ public class ll1 {
 			String ans = "";
 			for(String s1 : table.keySet()){
 				for(String s2 : table.get(s1).keySet()){
-					System.out.println(s1 + " : " + s2 +  " : " + table.get(s1).get(s2)  );
+					// System.out.println(s1 + " : " + s2 +  " : " + table.get(s1).get(s2)  );
 					ans += s1+","+s2+","+table.get(s1).get(s2)+";";
 				}
 			}
@@ -239,20 +239,30 @@ public class ll1 {
 			int input_len = user_input.length();
 			int index = 0;
 
+			String matched_String = "";
+			// String ans = stack.peek();
+
+			ArrayList<String> ans =new ArrayList<String>();
+			ans.add(stack.peek());
 
 
 			while( stack.size()>0 ){
 				String top = stack.peek();
-				System.out.println("TOP : " + top);
+				// System.out.println("TOP : " + top);
 				String current_input = user_input.charAt(index)+"";
-				System.out.println("CUR : " + current_input );
+				// System.out.println("CUR : " + current_input );
+				String unmatched_string = "";
 
 				if( top.equals(current_input) ){
+					if(top.equals("$")==false)
+						matched_String+=top;
 					stack.pop();
 					index+=1;
 				}else{
 					if( table.get(top)==null || table.get(top).get(current_input)==null ){
 						flag=1;
+						// ans = ans + ";" + "ERROR";
+						ans.add("ERROR");
 						break;
 					}
 					String value = table.get(top).get(current_input);
@@ -264,20 +274,33 @@ public class ll1 {
 					}else{
 						stack.pop();
 					}
+
+				}
+
+				for( String aa : stack ){
+					if(aa.equals("$")==false)
+					unmatched_string =  aa + unmatched_string;
+				}
+
+				if( ans.get( ans.size()-1 ).equals( (matched_String+unmatched_string) )==false ){
+					ans.add((matched_String+unmatched_string));
 				}
 
 			}
 
-			if(flag==0){
-				System.out.println("Accepted");
-			}else{
-				System.out.println("Not Accepted");
+			// if(flag==0){
+			// 	System.out.println("Accepted");
+			// }else{
+			// 	System.out.println("Not Accepted");
+			// }
+
+			String temp  = "";
+			for(String tt : ans){
+				temp = temp + ";" + tt;
 			}
 
-
-
-
-			return null;
+			return temp;
+	
 		}
 	}
 
@@ -290,11 +313,18 @@ public class ll1 {
 
 		String grammar = "S,iST,e;T,cS,a";
 		String input1 = "iiac";
-		String input2 = "iiac";
+		String input2 = "iia";
 		CFG g = new CFG(grammar);
+		System.out.println("TABLE");
 		System.out.println(g.table());
-		System.out.println(g.parse(input1));
-		System.out.println(g.parse(input2));
+		System.out.println();
+		System.out.println();
+
+		System.out.println(input1 + " : " + g.parse(input1));
+
+		System.out.println();
+		System.out.println();
+		System.out.println(input2 + " : " +g.parse(input2));
 	}
 
 }
