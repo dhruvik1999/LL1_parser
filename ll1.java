@@ -12,6 +12,8 @@ public class ll1 {
 		String grammar;
 		Map<String ,  String[] > productions,follow_dict;
 		String start = "NONE";
+		Map<String ,  Map<String,String> > table;
+
 
 		/**
 		 * Creates an instance of the CFG class. This should parse a string
@@ -77,18 +79,18 @@ public class ll1 {
 			if( s.length() != 1 ){
 				return new HashMap<String, String[] >();
 			}
-			System.out.println("CALL : "+s);
+			// System.out.println("CALL : "+s);
 			for( String key : productions.keySet() ){
 				// System.out.println(key);
 				for( String value : productions.get(key) ){
-					 System.out.println( key + " : " + value );
+					 // System.out.println( key + " : " + value );
 					int f = value.indexOf(s);
 					System.out.println("f::"+f);
 					if(f!=-1){
 						if( f==value.length()-1 ){
 							if( key.equals(s)==false ){
 								if( ans.keySet().contains(key)==false){
-									System.out.println("NOT Found");
+									
 								 	ans = follow(key,ans);
 								}
 								ans.put(s,union(ans.get(s),ans.get(key)));
@@ -159,29 +161,63 @@ public class ll1 {
     			return uon;
 		}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		/**
 		 * Generates the parsing table for this context free grammar. This should set
 		 * your internal parsing table attributes
 		 * 
 		 * @return A string representation of the parsing table
 		 */
+// 			if value!='@':
+// 				for element in first(value, productions):
+// 					table[key, element] = value
+// 			else:
+// 				for element in follow[key]:
+// 					table[key, element] = value
+
+// 	for key,val in table.items():
+// 		print key,"=>",val
+
+// 	new_table = {}
+// 	for pair in table:
+// 		new_table[pair[1]] = {}
+
+// 	for pair in table:
+// 		new_table[pair[1]][pair[0]] = table[pair]
+
 		public String table() {
-			return null;
+			this.table = new HashMap< String , Map < String, String > >();
+
+			for(String key : productions.keySet()){
+				for(String value : productions.get(key)){
+					if(value.equals("e")==false){
+						for(String element : first(value)){
+							if( table.keySet().contains(key) )
+								table.get(key).put(element,value);
+							else{
+								table.put(key,new HashMap<String,String>());
+								table.get(key).put(element,value);
+							}
+						}
+					}else{
+						for(String element : follow_dict.get(key)  ){
+							if( table.keySet().contains(key) )
+								table.get(key).put(element,value);
+							else{
+								table.put(key,new HashMap<String,String>());
+								table.get(key).put(element,value);
+							}
+						}
+					}
+				}
+			}
+			String ans = "";
+			for(String s1 : table.keySet()){
+				for(String s2 : table.get(s1).keySet()){
+					System.out.println(s1 + " : " + s2 +  " : " + table.get(s1).get(s2)  );
+					ans += s1+","+s2+","+table.get(s1).get(s2)+";";
+				}
+			}
+			return ans;
 		}
 
 		/**
@@ -202,7 +238,7 @@ public class ll1 {
 		 * and class names are case sensitive
 		 */
 
-		String grammar = "S,abDS,X;D,fD,e;X,t";
+		String grammar = "S,iST,e;T,cS,a";
 		String input1 = "iiac";
 		String input2 = "iia";
 		CFG g = new CFG(grammar);

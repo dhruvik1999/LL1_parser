@@ -1,3 +1,2 @@
-S -> abDS | X
-D -> fD | @
-X -> t
+S -> iST | @
+T -> cS | a
