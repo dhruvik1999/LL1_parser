@@ -217,6 +217,7 @@ public class ll1 {
 					ans += s1+","+s2+","+table.get(s1).get(s2)+";";
 				}
 			}
+			// System.out.println("--> :"+table.get("T").get("$"));
 			return ans;
 		}
 
@@ -238,9 +239,39 @@ public class ll1 {
 			int input_len = user_input.length();
 			int index = 0;
 
+
+
 			while( stack.size()>0 ){
 				String top = stack.peek();
-				System.out.print(top);
+				System.out.println("TOP : " + top);
+				String current_input = user_input.charAt(index)+"";
+				System.out.println("CUR : " + current_input );
+
+				if( top.equals(current_input) ){
+					stack.pop();
+					index+=1;
+				}else{
+					if( table.get(top)==null || table.get(top).get(current_input)==null ){
+						flag=1;
+						break;
+					}
+					String value = table.get(top).get(current_input);
+					if( value.equals("e")==false ){
+						stack.pop();
+						for( int i=value.length()-1;i>=0;i-- ){
+							stack.push( ( value.charAt(i)+"" ) );
+						}
+					}else{
+						stack.pop();
+					}
+				}
+
+			}
+
+			if(flag==0){
+				System.out.println("Accepted");
+			}else{
+				System.out.println("Not Accepted");
 			}
 
 
@@ -259,7 +290,7 @@ public class ll1 {
 
 		String grammar = "S,iST,e;T,cS,a";
 		String input1 = "iiac";
-		String input2 = "iia";
+		String input2 = "iiac";
 		CFG g = new CFG(grammar);
 		System.out.println(g.table());
 		System.out.println(g.parse(input1));
